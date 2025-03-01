@@ -1,5 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Phone } from './components/Phone';  
+import { Phone } from './components/Phone';
 
 interface FavoritesState {
   favorites: Phone[];
@@ -19,7 +19,9 @@ const favoritesSlice = createSlice({
       }
     },
     removeFavorite: (state, action: PayloadAction<string>) => {
-      state.favorites = state.favorites.filter((fav) => fav.id !== action.payload);
+      state.favorites = state.favorites.filter(
+        (fav) => fav.id !== action.payload,
+      );
     },
   },
 });

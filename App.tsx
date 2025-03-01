@@ -3,9 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import HomeScreen from './screens/HomeScreen';
-import PhoneDetails from './screens/detail_annonce';
-import FavoritesScreen from './screens/FavoritesScreen';
+import HomeScreen from './screens/PageAccueil';
+import PhoneDetails from './screens/DetailAnnonce';
+import FavoritesScreen from './screens/PageFavoris';
 
 export type RootStackParamList = {
   Home: undefined;

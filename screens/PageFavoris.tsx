@@ -1,11 +1,20 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Button,
+  StyleSheet,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, removeFavorite } from '../store';
-import { Phone } from '../components/Phone'; // Vérifie le bon chemin
+import { Phone } from '../components/Phone';
 
-const FavoritesScreen = ({ navigation }: any) => {
-  const favorites: Phone[] = useSelector((state: RootState) => state.favorites.favorites);
+const PageFavoris = ({ navigation }: any) => {
+  const favorites: Phone[] = useSelector(
+    (state: RootState) => state.favorites.favorites,
+  );
   const dispatch = useDispatch();
 
   return (
@@ -16,7 +25,7 @@ const FavoritesScreen = ({ navigation }: any) => {
       ) : (
         <FlatList
           data={favorites}
-          keyExtractor={(item) => item.id} // ✅ L'ID est bien un string
+          keyExtractor={(item) => item.id} // ✅ Correction ici (id est string)
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
@@ -24,10 +33,18 @@ const FavoritesScreen = ({ navigation }: any) => {
             >
               <View style={styles.cardContent}>
                 <Text style={styles.model}>{item.model}</Text>
-                <Text style={styles.info}>{item.releaseDate} - {item.price} €</Text>
-                <Text style={styles.description} numberOfLines={3}>{item.description}</Text>
+                <Text style={styles.info}>
+                  {item.releaseDate} - {item.price} €
+                </Text>
+                <Text style={styles.description} numberOfLines={3}>
+                  {item.description}
+                </Text>
               </View>
-              <Button title="Supprimer" color="red" onPress={() => dispatch(removeFavorite(item.id))} />
+              <Button
+                title="Supprimer"
+                color="red"
+                onPress={() => dispatch(removeFavorite(item.id))}
+              />
             </TouchableOpacity>
           )}
         />
@@ -38,7 +55,12 @@ const FavoritesScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   container: { padding: 15, backgroundColor: 'white', flex: 1 },
-  header: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 15 },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
   emptyText: { fontSize: 16, textAlign: 'center', color: '#777' },
   card: {
     backgroundColor: '#f8f8f8',
@@ -55,4 +77,4 @@ const styles = StyleSheet.create({
   description: { fontSize: 14, color: '#444' },
 });
 
-export default FavoritesScreen;
+export default PageFavoris;
