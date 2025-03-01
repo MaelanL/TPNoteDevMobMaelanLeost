@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import HomeScreen from './screens/HomeScreen';
-import PhoneDetails from './screens/PhoneDetails';
+import PhoneDetails from './screens/detail_annonce';
 import FavoritesScreen from './screens/FavoritesScreen';
 
 export type RootStackParamList = {

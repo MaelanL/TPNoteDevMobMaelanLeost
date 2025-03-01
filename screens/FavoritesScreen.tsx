@@ -2,21 +2,21 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Button, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, removeFavorite } from '../store';
+import { Phone } from '../components/Phone'; // Vérifie le bon chemin
 
 const FavoritesScreen = ({ navigation }: any) => {
-  const favorites = useSelector((state: RootState) => state.favorites.favorites);
+  const favorites: Phone[] = useSelector((state: RootState) => state.favorites.favorites);
   const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Mes Favoris</Text>
-
       {favorites.length === 0 ? (
         <Text style={styles.emptyText}>Vous n'avez pas de favoris.</Text>
       ) : (
         <FlatList
           data={favorites}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id} // ✅ L'ID est bien un string
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import phoneData from '../donnees/phone.json';
-import { Phone } from '../models/Phone';
+import { Phone } from '../components/Phone';
+import AnnonceList from '../components/AnnonceList';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -37,20 +38,7 @@ const HomeScreen = () => {
 
       <Text style={styles.annonceCount}>Nombre d'annonces : {filteredData.length}</Text>
 
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate('Details', { phone: item })}
-          >
-            <Text style={styles.model}>{item.model}</Text>
-            <Text style={styles.info}>{item.releaseDate} - {item.price} €</Text>
-            <Text style={styles.description} numberOfLines={3}>{item.description}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      <AnnonceList data={filteredData} onSelect={(phone) => navigation.navigate('Details', { phone })} />
     </View>
   );
 };
@@ -62,10 +50,6 @@ const styles = StyleSheet.create({
   favoritesText: { color: 'white', fontWeight: 'bold' },
   input: { borderWidth: 1, borderColor: '#ddd', padding: 8, borderRadius: 5, marginBottom: 10 },
   annonceCount: { marginBottom: 10, fontStyle: 'italic' },
-  card: { backgroundColor: '#f8f8f8', padding: 10, borderRadius: 5, marginBottom: 10 },
-  model: { fontSize: 16, fontWeight: 'bold' },
-  info: { fontSize: 14, fontStyle: 'italic', color: '#666' },
-  description: { fontSize: 14, color: '#444' },
 });
 
 export default HomeScreen;

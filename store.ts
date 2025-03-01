@@ -1,11 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Phone {
-  id: number;
-  model: string;
-  description: string;
-  image: string; // Ajout de l'image
-}
+import { Phone } from './components/Phone';  
 
 interface FavoritesState {
   favorites: Phone[];
@@ -24,7 +18,7 @@ const favoritesSlice = createSlice({
         state.favorites.push(action.payload);
       }
     },
-    removeFavorite: (state, action: PayloadAction<number>) => {
+    removeFavorite: (state, action: PayloadAction<string>) => {
       state.favorites = state.favorites.filter((fav) => fav.id !== action.payload);
     },
   },

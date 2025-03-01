@@ -12,6 +12,6 @@ export interface Phone {
     salerCountry: string;
     phone: string;
     price: number;
-    image?: string; // Ajoute cette propriété si les téléphones ont une image
+    image?: string; 
   }
   

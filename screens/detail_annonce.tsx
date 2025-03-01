@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, addFavorite, removeFavorite } from '../store';
@@ -30,9 +30,14 @@ const PhoneDetails = () => {
       <Text style={styles.info}>Année de sortie : {phone.releaseDate}</Text>
 
       <Text style={styles.sectionTitle}>Vendeur :</Text>
-      <Text style={styles.info}>{phone.saler}</Text>
-      <Text style={styles.info}>Pays : {phone.salerCountry}  Ville : {phone.salerCity}</Text>
-      <Text style={styles.info}>Tel. {phone.phone}</Text>
+      <View style={styles.sellerContainer}>
+        <Image source={{ uri: phone.salerAvatar }} style={styles.sellerImage} />
+        <View>
+          <Text style={styles.sellerName}>{phone.saler}</Text>
+          <Text style={styles.info}>Pays : {phone.salerCountry}  Ville : {phone.salerCity}</Text>
+          <Text style={styles.info}>Tel. {phone.phone}</Text>
+        </View>
+      </View>
 
       <Text style={styles.sectionTitle}>Description :</Text>
       <Text style={styles.description}>{phone.description}</Text>
@@ -53,6 +58,9 @@ const styles = StyleSheet.create({
   info: { fontSize: 16, marginVertical: 2 },
   description: { fontSize: 14, marginTop: 10, color: '#444' },
   error: { fontSize: 18, color: 'red', textAlign: 'center' },
+  sellerContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
+  sellerImage: { width: 50, height: 50, borderRadius: 25, marginRight: 10 },
+  sellerName: { fontSize: 16, fontWeight: 'bold' },
 });
 
 export default PhoneDetails;
