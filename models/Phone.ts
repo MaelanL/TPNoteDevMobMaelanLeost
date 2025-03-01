@@ -1,0 +1,17 @@
+export interface Phone {
+    id: string;
+    model: string;
+    constructor: string;
+    os: string;
+    releaseDate: number;
+    salerAvatar: string;
+    saler: string;
+    description: string;
+    salerGender: string;
+    salerCity: string;
+    salerCountry: string;
+    phone: string;
+    price: number;
+    image?: string; // Ajoute cette propriété si les téléphones ont une image
+  }
+  
