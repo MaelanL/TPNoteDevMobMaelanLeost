@@ -6,7 +6,7 @@ import { RootStackParamList } from '../App';
 import phoneData from '../donnees/phone.json';
 import { Phone } from '../components/Phone';
 import ListeAnnonce from '../components/ListeAnnonce';
-import { Button, TextInput } from 'react-native-paper'; // ✅ Utilisation de Paper
+import { Button, TextInput, Menu, Divider } from 'react-native-paper'; // ✅ Utilisation de Paper
 
 type PageAccueilNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -14,14 +14,25 @@ const PageAccueil = () => {
   const navigation = useNavigation<PageAccueilNavigationProp>();
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<Phone[]>(phoneData);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [sortCriteria, setSortCriteria] = useState('default');
 
   useEffect(() => {
-    setFilteredData(
-      phoneData.filter((item) =>
-        item.model.toLowerCase().includes(search.toLowerCase()),
-      ),
+    let data = phoneData.filter((item) =>
+      item.model.toLowerCase().includes(search.toLowerCase()),
     );
-  }, [search]);
+
+    // Appliquer le tri
+    if (sortCriteria === 'priceAsc') {
+      data.sort((a, b) => a.price - b.price);
+    } else if (sortCriteria === 'priceDesc') {
+      data.sort((a, b) => b.price - a.price);
+    } else if (sortCriteria === 'releaseDate') {
+      data.sort((a, b) => b.releaseDate - a.releaseDate);
+    }
+
+    setFilteredData(data);
+  }, [search, sortCriteria]);
 
   return (
     <View style={styles.container}>
@@ -42,6 +53,51 @@ const PageAccueil = () => {
         mode="outlined"
         style={styles.input}
       />
+
+      {/* Bouton de tri */}
+      <Menu
+        visible={menuVisible}
+        onDismiss={() => setMenuVisible(false)}
+        anchor={
+          <Button
+            mode="outlined"
+            onPress={() => setMenuVisible(true)}
+            style={styles.sortButton}
+          >
+            Trier les annonces
+          </Button>
+        }
+      >
+        <Menu.Item
+          onPress={() => {
+            setSortCriteria('default');
+            setMenuVisible(false);
+          }}
+          title="Par défaut"
+        />
+        <Divider />
+        <Menu.Item
+          onPress={() => {
+            setSortCriteria('priceAsc');
+            setMenuVisible(false);
+          }}
+          title="Prix croissant"
+        />
+        <Menu.Item
+          onPress={() => {
+            setSortCriteria('priceDesc');
+            setMenuVisible(false);
+          }}
+          title="Prix décroissant"
+        />
+        <Menu.Item
+          onPress={() => {
+            setSortCriteria('releaseDate');
+            setMenuVisible(false);
+          }}
+          title="Année de sortie"
+        />
+      </Menu>
 
       <Text style={styles.annonceCount}>
         Nombre d'annonces : {filteredData.length}
@@ -65,6 +121,7 @@ const styles = StyleSheet.create({
   },
   favoritesButton: { marginVertical: 10 },
   input: { marginBottom: 10 },
+  sortButton: { marginBottom: 10 },
   annonceCount: { marginBottom: 10, fontStyle: 'italic' },
 });
 
