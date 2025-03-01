@@ -1,6 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TextInput, RadioButton, Divider, Button, Card } from 'react-native-paper';
+import {
+  TextInput,
+  RadioButton,
+  Divider,
+  Button,
+  Card,
+} from 'react-native-paper';
 
 interface FiltresProps {
   sortCriteria: string;
@@ -110,7 +116,13 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
-  radioContainer: { padding: 5, backgroundColor: '#fff', borderRadius: 10, borderWidth: 1, borderColor: '#ddd' },
+  radioContainer: {
+    padding: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
   radioRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -118,7 +130,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   smallInput: { width: 100, marginHorizontal: 5 },
   divider: { marginVertical: 10 },
 });

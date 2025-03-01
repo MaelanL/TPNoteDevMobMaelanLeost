@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
@@ -9,7 +15,10 @@ import ListeAnnonce from '../components/ListeAnnonce';
 import { Button, TextInput } from 'react-native-paper';
 import Filtres from '../components/Filtres';
 
-type PageAccueilNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type PageAccueilNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
 const PageAccueil = () => {
   const navigation = useNavigation<PageAccueilNavigationProp>();
@@ -32,12 +41,16 @@ const PageAccueil = () => {
     // Appliquer le filtre sur le prix
     const minPrice = priceMin ? parseFloat(priceMin) : 0;
     const maxPrice = priceMax ? parseFloat(priceMax) : Infinity;
-    data = data.filter((item) => item.price >= minPrice && item.price <= maxPrice);
+    data = data.filter(
+      (item) => item.price >= minPrice && item.price <= maxPrice,
+    );
 
     // Appliquer le filtre sur la date
     const minDate = dateMin ? parseInt(dateMin, 10) : 0;
     const maxDate = dateMax ? parseInt(dateMax, 10) : Infinity;
-    data = data.filter((item) => item.releaseDate >= minDate && item.releaseDate <= maxDate);
+    data = data.filter(
+      (item) => item.releaseDate >= minDate && item.releaseDate <= maxDate,
+    );
 
     // Appliquer le tri
     if (sortCriteria === 'priceAsc') {
@@ -56,14 +69,28 @@ const PageAccueil = () => {
       <View style={styles.container}>
         <Text style={styles.header}>Liste des annonces</Text>
 
-        <Button mode="contained" onPress={() => navigation.navigate('Favorites')} style={styles.favoritesButton}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('Favorites')}
+          style={styles.favoritesButton}
+        >
           Mes favoris
         </Button>
 
-        <TextInput label="Rechercher un modèle..." value={search} onChangeText={setSearch} mode="outlined" style={styles.input} />
+        <TextInput
+          label="Rechercher un modèle..."
+          value={search}
+          onChangeText={setSearch}
+          mode="outlined"
+          style={styles.input}
+        />
 
         {/* Bouton pour afficher les filtres et tri */}
-        <Button mode="outlined" onPress={() => setShowFilters(!showFilters)} style={styles.toggleButton}>
+        <Button
+          mode="outlined"
+          onPress={() => setShowFilters(!showFilters)}
+          style={styles.toggleButton}
+        >
           {showFilters ? 'Masquer les filtres' : 'Filtres & Tri'}
         </Button>
 
@@ -83,9 +110,14 @@ const PageAccueil = () => {
           />
         )}
 
-        <Text style={styles.annonceCount}>Nombre d'annonces : {filteredData.length}</Text>
+        <Text style={styles.annonceCount}>
+          Nombre d'annonces : {filteredData.length}
+        </Text>
 
-        <ListeAnnonce data={filteredData} onSelect={(phone) => navigation.navigate('Details', { phone })} />
+        <ListeAnnonce
+          data={filteredData}
+          onSelect={(phone) => navigation.navigate('Details', { phone })}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

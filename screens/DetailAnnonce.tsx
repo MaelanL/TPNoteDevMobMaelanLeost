@@ -31,7 +31,9 @@ const DetailAnnonce = () => {
         <Card.Title
           title={phone.saler}
           subtitle={`${phone.salerCity}, ${phone.salerCountry}`}
-          left={(props) => <Avatar.Image {...props} source={{ uri: phone.salerAvatar }} />}
+          left={(props) => (
+            <Avatar.Image {...props} source={{ uri: phone.salerAvatar }} />
+          )}
         />
       </Card>
 
@@ -61,7 +63,12 @@ const DetailAnnonce = () => {
 
 const styles = StyleSheet.create({
   container: { padding: 15, backgroundColor: 'white', flex: 1 },
-  header: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 15 },
+  header: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 10 },
   info: { fontSize: 16, marginVertical: 2 },
   description: { fontSize: 14, marginTop: 10, color: '#444' },

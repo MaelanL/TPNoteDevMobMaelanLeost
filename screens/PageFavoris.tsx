@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, removeFavorite } from '../store';
 import { Phone } from '../components/Phone';
