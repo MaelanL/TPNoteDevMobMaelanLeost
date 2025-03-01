@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import phoneData from '../donnees/phone.json';
 import { Phone } from '../components/Phone';
 import ListeAnnonce from '../components/ListeAnnonce';
-import { Button, TextInput, Menu, Divider } from 'react-native-paper'; // ✅ Utilisation de Paper
+import { Button, TextInput } from 'react-native-paper';
+import Filtres from '../components/Filtres';
 
 type PageAccueilNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -14,13 +15,29 @@ const PageAccueil = () => {
   const navigation = useNavigation<PageAccueilNavigationProp>();
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<Phone[]>(phoneData);
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const [sortCriteria, setSortCriteria] = useState('default');
+
+  // États pour les filtres Prix et Année
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [dateMin, setDateMin] = useState('');
+  const [dateMax, setDateMax] = useState('');
 
   useEffect(() => {
     let data = phoneData.filter((item) =>
       item.model.toLowerCase().includes(search.toLowerCase()),
     );
+
+    // Appliquer le filtre sur le prix
+    const minPrice = priceMin ? parseFloat(priceMin) : 0;
+    const maxPrice = priceMax ? parseFloat(priceMax) : Infinity;
+    data = data.filter((item) => item.price >= minPrice && item.price <= maxPrice);
+
+    // Appliquer le filtre sur la date
+    const minDate = dateMin ? parseInt(dateMin, 10) : 0;
+    const maxDate = dateMax ? parseInt(dateMax, 10) : Infinity;
+    data = data.filter((item) => item.releaseDate >= minDate && item.releaseDate <= maxDate);
 
     // Appliquer le tri
     if (sortCriteria === 'priceAsc') {
@@ -32,97 +49,72 @@ const PageAccueil = () => {
     }
 
     setFilteredData(data);
-  }, [search, sortCriteria]);
+  }, [search, sortCriteria, priceMin, priceMax, dateMin, dateMax]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Liste des annonces</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Liste des annonces</Text>
 
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate('Favorites')}
-        style={styles.favoritesButton}
-      >
-        Mes favoris
-      </Button>
+        <Button mode="contained" onPress={() => navigation.navigate('Favorites')} style={styles.favoritesButton}>
+          Mes favoris
+        </Button>
 
-      <TextInput
-        label="Rechercher un modèle..."
-        value={search}
-        onChangeText={setSearch}
-        mode="outlined"
-        style={styles.input}
-      />
+        <TextInput label="Rechercher un modèle..." value={search} onChangeText={setSearch} mode="outlined" style={styles.input} />
 
-      {/* Bouton de tri */}
-      <Menu
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}
-        anchor={
-          <Button
-            mode="outlined"
-            onPress={() => setMenuVisible(true)}
-            style={styles.sortButton}
-          >
-            Trier les annonces
-          </Button>
-        }
-      >
-        <Menu.Item
-          onPress={() => {
-            setSortCriteria('default');
-            setMenuVisible(false);
-          }}
-          title="Par défaut"
-        />
-        <Divider />
-        <Menu.Item
-          onPress={() => {
-            setSortCriteria('priceAsc');
-            setMenuVisible(false);
-          }}
-          title="Prix croissant"
-        />
-        <Menu.Item
-          onPress={() => {
-            setSortCriteria('priceDesc');
-            setMenuVisible(false);
-          }}
-          title="Prix décroissant"
-        />
-        <Menu.Item
-          onPress={() => {
-            setSortCriteria('releaseDate');
-            setMenuVisible(false);
-          }}
-          title="Année de sortie"
-        />
-      </Menu>
+        {/* Bouton pour afficher les filtres et tri */}
+        <Button mode="outlined" onPress={() => setShowFilters(!showFilters)} style={styles.toggleButton}>
+          {showFilters ? 'Masquer les filtres' : 'Filtres & Tri'}
+        </Button>
 
-      <Text style={styles.annonceCount}>
-        Nombre d'annonces : {filteredData.length}
-      </Text>
+        {/* Affichage du composant Filtres */}
+        {showFilters && (
+          <Filtres
+            sortCriteria={sortCriteria}
+            setSortCriteria={setSortCriteria}
+            priceMin={priceMin}
+            setPriceMin={setPriceMin}
+            priceMax={priceMax}
+            setPriceMax={setPriceMax}
+            dateMin={dateMin}
+            setDateMin={setDateMin}
+            dateMax={dateMax}
+            setDateMax={setDateMax}
+          />
+        )}
 
-      <ListeAnnonce
-        data={filteredData}
-        onSelect={(phone) => navigation.navigate('Details', { phone })}
-      />
-    </View>
+        <Text style={styles.annonceCount}>Nombre d'annonces : {filteredData.length}</Text>
+
+        <ListeAnnonce data={filteredData} onSelect={(phone) => navigation.navigate('Details', { phone })} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 15, backgroundColor: 'white', flex: 1 },
-  header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
   },
-  favoritesButton: { marginVertical: 10 },
-  input: { marginBottom: 10 },
-  sortButton: { marginBottom: 10 },
-  annonceCount: { marginBottom: 10, fontStyle: 'italic' },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  favoritesButton: {
+    marginBottom: 16,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  toggleButton: {
+    marginBottom: 16,
+  },
+  annonceCount: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
 });
 
 export default PageAccueil;
