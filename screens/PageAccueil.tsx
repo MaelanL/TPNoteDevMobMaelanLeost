@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import phoneData from '../donnees/phone.json';
 import { Phone } from '../components/Phone';
 import ListeAnnonce from '../components/ListeAnnonce';
+import { Button, TextInput } from 'react-native-paper'; // ✅ Utilisation de Paper
 
 type PageAccueilNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -32,21 +27,20 @@ const PageAccueil = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Liste des annonces</Text>
 
-      {/* ✅ Ajout d'un espace entre le bouton favoris et la barre de recherche */}
-      <TouchableOpacity
-        style={styles.favoritesButton}
+      <Button
+        mode="contained"
         onPress={() => navigation.navigate('Favorites')}
+        style={styles.favoritesButton}
       >
-        <Text style={styles.favoritesText}>Mes favoris</Text>
-      </TouchableOpacity>
-
-      <View style={styles.spacer} /> 
+        Mes favoris
+      </Button>
 
       <TextInput
-        style={styles.input}
-        placeholder="Rechercher un modèle..."
+        label="Rechercher un modèle..."
         value={search}
         onChangeText={setSearch}
+        mode="outlined"
+        style={styles.input}
       />
 
       <Text style={styles.annonceCount}>
@@ -69,21 +63,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  favoritesButton: {
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 5,
-    alignSelf: 'center',
-  },
-  favoritesText: { color: 'white', fontWeight: 'bold' },
-  spacer: { height: 10 }, 
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 8,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
+  favoritesButton: { marginVertical: 10 },
+  input: { marginBottom: 10 },
   annonceCount: { marginBottom: 10, fontStyle: 'italic' },
 });
 
